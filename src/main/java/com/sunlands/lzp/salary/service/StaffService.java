@@ -4,7 +4,15 @@ import com.sunlands.lzp.salary.entity.Staff;
 import com.sunlands.lzp.salary.pojo.dto.*;
 import com.sunlands.lzp.salary.pojo.vo.ListStaffVO;
 
+import java.util.HashMap;
+import java.util.List;
+
 public interface StaffService {
+
+    List<Staff> selectStaff(HashMap<Object, Object> params);
+
+    Long count(HashMap<Object, Object> params);
+
     //增加员工
     void addStaff(StaffDTO staffDTO);
 

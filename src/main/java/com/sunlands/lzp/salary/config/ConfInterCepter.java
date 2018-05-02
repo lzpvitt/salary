@@ -13,11 +13,10 @@ public class ConfInterCepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session=request.getSession();
-        if(session.getAttribute("password")!=null){
-            System.out.println("true");
+        if (session.getAttribute("token") != null) {
             return true;
         }else{
-            System.out.println("false");
+            response.sendRedirect("/");
             return false;
         }
 
@@ -25,7 +24,6 @@ public class ConfInterCepter implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-response.sendRedirect("");
     }
 
     @Override

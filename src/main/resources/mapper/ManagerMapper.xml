@@ -1,9 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sunlands.lzp.salary.dao.StaffDao">
+<mapper namespace="com.sunlands.lzp.salary.dao.ManagerDao">
     <resultMap id="BaseResultMap" type="com.sunlands.lzp.salary.entity.Manager">
         <id property="id" column="id" />
         <result column="power" property="power" jdbcType="INTEGER"></result>
-        <result column="user_name" property="user_name"></result>
+        <result column="user_name" property="user_name" jdbcType="VARCHAR"></result>
+        <result column="real_name" property="real_name" jdbcType="VARCHAR"></result>
+        <result column="pwd" property="pwd" jdbcType="VARCHAR"></result>
+        <result column="tel" property="tel" jdbcType="BIGINT"></result>
+        <result column="active" property="active" jdbcType="TINYINT"></result>
     </resultMap>
+
+    <select id="selectManager" parameterType="map" resultMap="BaseResultMap">
+        select * from manager where active&lt;2
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="user_name!=null">
+            and user_name=#{user_name}
+        </if>
+        <if test="real_name!=null">
+            and real_name=#{real_name}
+        </if>
+        <if test="tel!=null">
+            and tel=#{tel}
+        </if>
+        <if test="active!=null">
+            and active=#{active}
+        </if>
+        <if test="pwd!=null">
+            and pwd=#{pwd}
+        </if>
+        <if test="pageBegin!=null and pageOff!=null">
+            limit #{pageBegin},#{pageOff}
+        </if>
+    </select>
+
+    <select id="countManagers" parameterType="map" resultType="java.lang.Integer">
+        select count(id) from manager where active&lt;2
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="user_name!=null">
+            and user_name=#{user_name}
+        </if>
+        <if test="real_name!=null">
+            and real_name=#{real_name}
+        </if>
+        <if test="tel!=null">
+            and tel=#{tel}
+        </if>
+        <if test="active!=null">
+            and active=#{active}
+        </if>
+        <if test="pwd!=null">
+            and pwd =#{pwd}
+        </if>
+    </select>
+
+    <select id="countManager" resultType="java.lang.Integer">
+select count(id) from manager  where active&lt;2
+    </select>
+
+    <update id="changeStatus">
+        update manager set active=#{active} where id=#{id}
+    </update>
+
+    <update id="managerEdit">
+        update manager set power=${power},user_name=#{user_name},real_name=#{real_name},tel=#{tel} where id=${id}
+    </update>
+    <insert id="insertManager">
+        insert into manager set power=#{power},user_name=#{user_name},real_name=#{real_name},pwd=#{pwd},tel=#{tel},active=#{active}
+    </insert>
+
+    <update id="deleteManager">
+        update manager set active=3 where id=#{id}
+    </update>
 </mapper>

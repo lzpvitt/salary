@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理系统</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/tab.js"></script>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li><a href="#"><h3>管理窗口</h3></a></li>
+    <li class="active"><a href="/manInfoManager"><h3>管理员信息管理</h3></a></li>
+    <li><a href="/manInfoStaff"><h3>员工信息管理</h3></a></li>
+    <!--<li><a href="/manInfoSalary"><h3>员工工资录入</h3></a></li>-->
+    <li><a href="/manInfoMail"><h3>邮件发送</h3></a></li>
+    <li><a href="/manOut"><h3>退出登录</h3></a></li>
+</ul>
+
+<form action="/saveManager">
+    <label for="user_name">用户名</label>
+    <input type="text" class="form-control" id="user_name" name="user_name"
+           placeholder="name">
+    <label for="real_name">姓名</label>
+    <input type="text" class="form-control" id="real_name" name="real_name"
+           placeholder="real_name">
+    <label for="tel">手机号</label>
+    <input type="text" class="form-control" id="tel" name="tel"
+           placeholder="tel">
+    <label for="pwd">密码</label>
+    <input type="text" class="form-control" id="pwd" name="pwd"
+           placeholder="psw">
+    <label for="power">权限</label>
+    <select id="power" name="power">
+        <option selected="selected" value="0">超级管理</option>
+        <option value="1">普通管理</option>
+    </select>
+    <input type="submit" placeholder="提交">
+</form>
+</body>
+</html>

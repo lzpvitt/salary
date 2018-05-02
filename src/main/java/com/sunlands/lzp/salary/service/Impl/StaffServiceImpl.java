@@ -9,10 +9,23 @@ import com.sunlands.lzp.salary.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 public class StaffServiceImpl implements StaffService {
     @Autowired
     StaffDao staffDao;
+
+    @Override
+    public List<Staff> selectStaff(HashMap<Object, Object> params) {
+        return staffDao.selectList(params);
+    }
+
+    @Override
+    public Long count(HashMap<Object, Object> params) {
+        return staffDao.count(params);
+    }
 
     @Override
     public void addStaff(StaffDTO staffDTO) {

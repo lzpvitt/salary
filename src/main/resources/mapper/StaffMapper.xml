@@ -1,47 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sunlands.lzp.salary.dao.StaffDao">
-    <!--<resultMap id="BaseResultMap" type="com.sunlands.lzp.salary.entity.Staff">-->
-        <!--<id property="id" column="id" />-->
-        <!--<result column="path" property="path" />-->
-    <!--</resultMap>-->
+    <resultMap id="BaseResultMap" type="com.sunlands.lzp.salary.entity.Staff">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="user_name" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="join_time" property="join_time" jdbcType="DATE"/>
+        <result column="base_salary" property="base_salary" jdbcType="BIGINT"/>
+        <result column="merit_pay" property="merit_pay" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="sqlSelect">
+        <if test="id!=null">
+            and id =#{id}
+        </if>
+        <if test="email!=null">
+            and email=#{email}
+        </if>
+        <if test="user_name!=null">
+            and user_name=#{user_name}
+        </if>
+        <if test="join_time1!=null and join_time2!=null and join_time1!='' and join_time2!=''">
+            and join_time &gt; #{join_time1} and join_time &lt; #{join_time2}
+        </if>
+        <if test="status!=null">
+            and status=#{status}
+        </if>
+    </sql>
+    <select id="selectList" parameterType="map" resultMap="BaseResultMap">
+        select * from staff where status&lt;3
+        <if test="id!=null">
+            and id =#{id}
+        </if>
+        <if test="email!=null">
+            and email=#{email}
+        </if>
+        <if test="user_name!=null">
+            and user_name=#{user_name}
+        </if>
+        <if test="join_time1!=null and join_time2!=null">
+            and join_time &gt; #{join_time1} and join_time &lt; #{join_time2}
+        </if>
+        <if test="status !=null">
+            and status=#{status}
+        </if>
+        <if test="pageBegin!=null and pageOff!=null">
+            limit #{pageBegin},#{pageOff}
+        </if>
+    </select>
 
-
-    <!--<sql id="Base_Column_List">-->
-        <!--id, path-->
-    <!--</sql>-->
-
-    <!--<select id="selectList" resultMap="BaseResultMap" >-->
-
-        <!--select <include refid="Base_Column_List" />-->
-        <!--from staff-->
-        <!--<where>-->
-            <!--<if test="email != '' ">-->
-                <!--and email = #{email}-->
-            <!--</if><if test="email != '' ">-->
-                <!--and email = #{email}-->
-            <!--</if>-->
-        <!--</where>-->
-        <!--<if test="beginIndex != null ">-->
-          <!--limit #{beginIndex},#{resultSize}-->
-        <!--</if>-->
-        <!--<if test="sort" >-->
-            <!--order by #{sort}-->
-        <!--</if>-->
-    <!--</select>-->
-
-    <!--<insert id="insert" >-->
-        <!--insert into t_courseware-->
-        <!--<trim prefix="(" suffix=")" suffixOverrides="," >-->
-            <!--<if test="path != null" >-->
-                <!--path-->
-            <!--</if>-->
-        <!--</trim>-->
-        <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
-            <!--<if test="path != null" >-->
-                <!--#{path}-->
-            <!--</if>-->
-        <!--</trim>-->
-    <!--</insert>-->
-
+    <select id="count" resultType="java.lang.Long" parameterType="map">
+        select count(*) from staff where status&lt;3
+        <include refid="sqlSelect"></include>
+    </select>
 </mapper>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>员工管理系统</title>
@@ -16,5 +16,19 @@
     <li><a href="/manOut">退出登录</a></li>
 </ul>
 
+<form action="/selectManager" method="get">
+    <input type="text" placeholder="用户名" name="user_name" id="user_name">
+    <input type="text" placeholder="真实姓名" name="real_name" id="real_name">
+    <input type="text" placeholder="手机号" name="tel" id="tel">
+    <select id="active" name="active">
+        <option value="1">有效</option>
+        <option value="0">冻结</option>
+        <option value="2" selected="selected">不选</option>
+    </select>
+    <input type="submit" value="管理查询">
+</form>
+<form action="/addManager">
+    <input type="submit" value="增加管理员">
+</form>
 </body>
 </html>

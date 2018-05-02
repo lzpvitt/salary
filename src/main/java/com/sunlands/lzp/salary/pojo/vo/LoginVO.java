@@ -1,15 +1,15 @@
 package com.sunlands.lzp.salary.pojo.vo;
 
-public class Manager {
+public class LoginVO {
     private String username;
     private String password;
 
-    public String getName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setName(String name) {
-        this.username = name;
+    public void setUsername(String user_name) {
+        this.username = user_name;
     }
 
     public String getPassword() {

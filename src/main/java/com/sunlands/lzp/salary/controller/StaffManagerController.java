@@ -1,6 +1,7 @@
 package com.sunlands.lzp.salary.controller;
 
 import com.sunlands.lzp.salary.entity.Rates;
+import com.sunlands.lzp.salary.entity.Staff;
 import com.sunlands.lzp.salary.pojo.dto.*;
 import com.sunlands.lzp.salary.pojo.vo.*;
 import com.sunlands.lzp.salary.service.CalculateService;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class StaffManagerController {
@@ -38,6 +42,41 @@ public class StaffManagerController {
         ModelAndView mv = new ModelAndView("staffManager");
         mv.addObject("listStaffVO", listStaffVO);
         return mv;
+    }
+
+    @RequestMapping(value = {"/selectStaff"})
+    public ModelAndView selectStaff(SelectStaffDTO selectStaffDTO) {
+        HashMap<Object, Object> params = new HashMap<>();
+        if (selectStaffDTO.getEmail() != null && !selectStaffDTO.getEmail().trim().equals("")) {
+            params.put("email", selectStaffDTO.getEmail().trim());
+        }
+        if (selectStaffDTO.getUser_name() != null && !selectStaffDTO.getUser_name().trim().equals("")) {
+            params.put("user_name", selectStaffDTO.getUser_name().trim());
+        }
+        if (selectStaffDTO.getStatus() > -1 && selectStaffDTO.getStatus() < 3) {
+            params.put("status", selectStaffDTO.getStatus());
+        }
+        if (selectStaffDTO.getJoin_time1() != null && selectStaffDTO.getJoin_time2() != null) {
+            params.put("join_time1", selectStaffDTO.getJoin_time1().replace("T", " "));
+            params.put("join_time2", selectStaffDTO.getJoin_time2().replace("T", " "));
+        }
+        if (selectStaffDTO.getPageNum() != 0 && selectStaffDTO.getPageSize() != 0) {
+            params.put("pageBegin", (selectStaffDTO.getPageNum() - 1) * selectStaffDTO.getPageSize());
+            params.put("pageOff", selectStaffDTO.getPageSize());
+        }
+        List<Staff> staffList = staffService.selectStaff(params);
+        Long totalNum = staffService.count(params);
+        ListStaffVO listStaffVO = new ListStaffVO(staffList);
+        if (selectStaffDTO.getPageNum() != 0 && selectStaffDTO.getPageSize() != 0) {
+            listStaffVO.setPageNum(selectStaffDTO.getPageNum());
+            listStaffVO.setPageSize(selectStaffDTO.getPageSize());
+        }
+        listStaffVO.setTotalNum(totalNum);
+        listStaffVO.setPageNum(selectStaffDTO.getPageNum());
+        System.out.println(totalNum);
+        ModelAndView modelAndView = new ModelAndView("staffManager");
+        modelAndView.addObject("listStaffVO", listStaffVO);
+        return modelAndView;
     }
 
     @RequestMapping(value = {"/selectByEmail"}, method = RequestMethod.GET)
@@ -67,7 +106,7 @@ public class StaffManagerController {
     }
 
     @RequestMapping(value = {"/selectByStatus"})
-    public ModelAndView getStaffByStatus(StatusDTO statusDTO){
+    public ModelAndView getStaffByStatus(StatusDTO statusDTO) {
         ListStaffVO listStaffVO = staffService.getByStatus(statusDTO);
         ModelAndView mv = new ModelAndView("staffManager");
 //        System.out.println(listStaffVO.getTotalNum());
@@ -112,7 +151,7 @@ public class StaffManagerController {
 
 
     @RequestMapping(value = {"/addSalary"})
-    public ModelAndView addSalary(staffSalaryVO staffSalaryVO){
+    public ModelAndView addSalary(staffSalaryVO staffSalaryVO) {
 //        System.out.println(staffSalaryVO.getStaff_id());
         //取得基本信息  进入编辑页面
         ModelAndView modelAndView = new ModelAndView("salaryEdit");
@@ -123,17 +162,24 @@ public class StaffManagerController {
     //结算工资信息
     @ResponseBody
     @RequestMapping(value = {"/calculateSalary"})
-    public SalaryResultVO calculateSalary(@RequestBody staffSalaryVO staffSalaryVO){
+    public SalaryResultVO calculateSalary(@RequestBody staffSalaryVO staffSalaryVO) {
 //        System.out.println(staffSalaryVO.getMerit_pay());
-        Rates rates= ratesService.seleteRate();
+        Rates rates = ratesService.seleteRate();
 //        System.out.println(rates.getBase());
-        SalaryResultVO salaryResultVO = calculateService.calculate(rates,staffSalaryVO);
+        SalaryResultVO salaryResultVO = calculateService.calculate(rates, staffSalaryVO);
         return salaryResultVO;
     }
 
     @RequestMapping(value = {"/saveSalary"})
-    public String saveSalary(SalaryVO salaryVO){
+    public String saveSalary(SalaryVO salaryVO) {
+        //因为加入了一键发工资的部分  这里改成本月已经有工资就更新 没有就加入
         salaryService.insertSalary(new SalaryDTO(salaryVO));
+        return "staffEditSuccess";
+    }
+
+    @RequestMapping(value = "/calAndSendSalaryById")
+    public String calAndSendSalaryById(IdDTO idDTO) {
+        salaryService.sendSalary(idDTO.getId());
         return "staffEditSuccess";
     }
 }

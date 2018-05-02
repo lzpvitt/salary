@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunlands.lzp.salary.dao.SalarysDao">
+    <resultMap id="BaseResultMap" type="com.sunlands.lzp.salary.entity.Salarys">
+        <id property="id" column="id" jdbcType="INTEGER"></id>
+        <result column="staff_id" property="staff_id" jdbcType="INTEGER"></result>
+        <result column="base_salary" property="base_salary" jdbcType="BIGINT"></result>
+        <result column="merit_pay" property="merit_pay" jdbcType="BIGINT"></result>
+        <result column="income" property="income" jdbcType="BIGINT"></result>
+        <result column="social_security" property="social_security" jdbcType="BIGINT"></result>
+        <result column="public_reserve_funds" property="public_reserve_funds" jdbcType="BIGINT"></result>
+        <result column="personal_income_tax" property="personal_income_tax" jdbcType="BIGINT"></result>
+        <result column="after_tax_income" property="after_tax_income" jdbcType="BIGINT"></result>
+        <result column="balance_date" property="balance_date" jdbcType="DATE"></result>
+        <result column="salary_from" property="salary_from" jdbcType="DATE"></result>
+        <result column="salary_end" property="salary_end" jdbcType="DATE"></result>
+    </resultMap>
+
+    <select id="selectSalary" resultMap="BaseResultMap" parameterType="map">
+        select * from salarys
+        <where>
+            <if test="staff_id !=null">
+                staff_id=#{staff_id}
+            </if>
+            <if test="beginTime!=null and endTime!=null">
+                and balance_date &gt; #{beginTime} and balance_date &lt; #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

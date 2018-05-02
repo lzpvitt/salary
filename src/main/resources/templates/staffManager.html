@@ -49,11 +49,11 @@
             ,address=${staffVo.address},join_time=${staffVo.join_time},base_salary=${staffVo.base_salary},merit_pay=${staffVo.merit_pay},status=${staffVo.status})}">修改</a>
             <!--根据id删除-->
             <a target="_blank" th:href="@{/deleteStaffByID(id=${staffVo.id})}" onclick="history.go(0)">删除</a>
-            <a target="_blank"  th:href="@{/addSalary(staff_id=${staffVo.id},base_salary=${staffVo.base_salary},merit_pay=${staffVo.merit_pay},user_name=${staffVo.user_name})}">工资录入</a>
+            <a target="_blank"
+               th:href="@{/addSalary(staff_id=${staffVo.id},base_salary=${staffVo.base_salary},merit_pay=${staffVo.merit_pay},user_name=${staffVo.user_name})}">手动工资录入</a>
             <a  th:href="@{/selectSalaryById(id=${staffVo.id})}">历史工资查询</a>
+            <a th:href="@{/calAndSendSalaryById(id=${staffVo.id})}">一键结算工资</a>
         </td>
-
-
     </tr>
     </tbody>
 </table>

@@ -1,7 +1,6 @@
 package com.sunlands.lzp.salary.controller;
 
 import com.sunlands.lzp.salary.entity.Staff;
-import com.sunlands.lzp.salary.pojo.dto.EmailInfoDTO;
 import com.sunlands.lzp.salary.pojo.dto.IdDTO;
 import com.sunlands.lzp.salary.pojo.dto.ListEmailInfoDTO;
 import com.sunlands.lzp.salary.pojo.dto.TimeZoneDTO;
@@ -9,6 +8,7 @@ import com.sunlands.lzp.salary.pojo.vo.ListSalaryAndInfoVO;
 import com.sunlands.lzp.salary.pojo.vo.ListSalaryVO;
 import com.sunlands.lzp.salary.pojo.vo.TimeZoneVO;
 import com.sunlands.lzp.salary.service.SalaryService;
+import com.sunlands.lzp.salary.service.SendMailService;
 import com.sunlands.lzp.salary.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +21,8 @@ public class SalaryManagerController {
     SalaryService salaryService;
     @Autowired
     StaffService staffService;
+    @Autowired
+    SendMailService sendMailService;
 
     @RequestMapping(value = {"/selectSalaryById"})
     public ModelAndView selectSalaryById(IdDTO idDTO) {
@@ -40,7 +42,7 @@ public class SalaryManagerController {
     public String sendEmailByDate(TimeZoneVO timeZoneVO){
         TimeZoneDTO timeZoneDTO =new TimeZoneDTO(timeZoneVO);
         ListEmailInfoDTO listEmailInfoDTO =new ListEmailInfoDTO(salaryService.selectByTimeZone());
-
-        return "test";
+        sendMailService.sendMails(listEmailInfoDTO);
+        return "staffEditSuccess";
     }
 }

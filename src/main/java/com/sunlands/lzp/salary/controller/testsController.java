@@ -1,19 +1,16 @@
 package com.sunlands.lzp.salary.controller;
 
 import com.sunlands.lzp.salary.config.ConfDataSource;
-import com.sunlands.lzp.salary.dao.StaffDao;
-import com.sunlands.lzp.salary.entity.Staff;
 import com.sunlands.lzp.salary.pojo.dto.StaffDTO;
-import com.sunlands.lzp.salary.pojo.vo.ListStaffVO;
 import com.sunlands.lzp.salary.pojo.vo.StaffVO;
+import com.sunlands.lzp.salary.service.ManagerService;
 import com.sunlands.lzp.salary.service.StaffService;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 
 @Controller
@@ -22,7 +19,8 @@ public class testsController {
     ConfDataSource dataSource;
     @Autowired
     StaffService staffService;
-
+    @Autowired
+    ManagerService managerService;
     @RequestMapping(value = {"/testD"})
     public String test() {
 //        ListStaffVO listStaffVO =staffService.getListStaffVO();
@@ -63,5 +61,23 @@ public class testsController {
             staffService.addStaff(new StaffDTO(staffVO));
             i++;
         }
+    }
+
+    @RequestMapping(value = {"/addManagers"})
+    public String addManager() {
+
+        int i = 0;
+        while (i < 100) {
+            HashMap<Object, Object> params = new HashMap<>();
+            i++;
+            params.put("user_name", "testName".concat(String.valueOf(i)));
+            params.put("power", 0);
+            params.put("real_name", "test_real_name".concat(String.valueOf(i)));
+            params.put("pwd", "pwd".concat(String.valueOf(i)));
+            params.put("tel", i);
+            params.put("active", 1);
+            managerService.insertManager(params);
+        }
+        return "test";
     }
 }

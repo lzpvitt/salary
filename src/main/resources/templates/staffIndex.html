@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>员工管理系统</title>
@@ -17,35 +17,53 @@
     <li><a href="/manInfoMail">邮件发送</a></li>
     <li><a href="/manOut">退出登录</a></li>
 </ul>
-<form action="/selectByEmail" method="get">
-    <input type="text" placeholder="邮箱" name="email" id="email">
-    <input type="submit" value="按邮箱查询">
-</form>
 
-<form action="/selectByUserName" method="get">
-    <input type="text" placeholder="用户名" name="user_name" id="user_name">
-    <input type="submit" value="姓名查询">
-</form>
-<form action="/selectByTimeZone" method="get">
-    <label for="join_time1">最早时间</label>
-    <input type="datetime-local" step="1"  id="join_time1" name="join_time1" width="15px">
-    <label for="join_time1">最晚时间</label>
-    <input type="datetime-local" step="1"  id="join_time2" name="join_time2" width="15px">
-    <input type="submit" value="时间查询">
-</form>
-<form action="/selectByStatus">
-    <select id="status" class="select" name="status">
-        <option value="0" selected="selected">在职</option>
+<!--<form action="/selectByEmail" method="get">-->
+<!--<input type="text" placeholder="邮箱" name="email" id="email">-->
+<!--<input type="submit" value="按邮箱查询">-->
+<!--</form>-->
+
+<!--<form action="/selectByUserName" method="get">-->
+<!--<input type="text" placeholder="用户名" name="user_name" id="user_name">-->
+<!--<input type="submit" value="姓名查询">-->
+<!--</form>-->
+<!--<form action="/selectByTimeZone" method="get">-->
+<!--<label for="join_time1">最早时间</label>-->
+<!--<input type="datetime-local" step="1"  id="join_time1" name="join_time1" width="15px">-->
+<!--<label for="join_time1">最晚时间</label>-->
+<!--<input type="datetime-local" step="1"  id="join_time2" name="join_time2" width="15px">-->
+<!--<input type="submit" value="时间查询">-->
+<!--</form>-->
+<!--<form action="/selectByStatus">-->
+<!--<select id="status" class="select" name="status">-->
+<!--<option value="0" selected="selected">在职</option>-->
+<!--<option value="1" >请假</option>-->
+<!--<option value="2" >离职</option>-->
+<!--</select>-->
+<!--<input type="submit" value="在职状态查询" />-->
+<!--</form>-->
+<!--<br/>-->
+<form action="/selectStaff">
+    <input type="text" placeholder="邮箱" name="email">
+    <input type="text" placeholder="用户名" name="user_name">
+    <label for="join_time11">最早时间</label>
+    <input type="datetime-local" step="1" id="join_time11" name="join_time1" width="15px">
+    <label for="join_time21">最晚时间</label>
+    <input type="datetime-local" step="1" id="join_time21" name="join_time2" width="15px">
+    <select class="select" name="status">
+        <option value="0">在职</option>
         <option value="1" >请假</option>
         <option value="2" >离职</option>
+        <option selected="selected" value="3">未选择</option>
     </select>
-    <input type="submit" value="在职状态查询" />
+    <input type="submit" value="查询员工">
 </form>
-<br/>
 <button onclick="javascrtpt:window.location.href='/addStaff'" class="button button-pill button-flat-primary">增加员工</button>
 <script>
-    document.getElementById("join_time1").value = getCurrentTime();
-    document.getElementById("join_time2").value = getCurrentTime();
+    // document.getElementById("join_time1").value = getCurrentTime();
+    // document.getElementById("join_time2").value = getCurrentTime();
+    document.getElementById("join_time11").value = getCurrentTime();
+    document.getElementById("join_time21").value = getCurrentTime();
 </script>
 </body>
 </html>

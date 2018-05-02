@@ -11,9 +11,9 @@ import java.util.Map;
 public interface StaffDao {
 
 
-    List<Staff> selectList(Map<String,Object> cond);
+    List<Staff> selectList(Map<Object, Object> cond);
 
-    Long count(Map<String,Object> cond);
+    Long count(Map<Object, Object> cond);
 
 
     //增加员工

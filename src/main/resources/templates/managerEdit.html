@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工信息编辑</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/tab.js"></script>
+    <style>
+        form {
+            height: 200px;
+            width: 500px;
+            border: 1px solid #666666;
+        }
+    </style>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li><a href="#"><h3>管理窗口</h3></a></li>
+    <li class="active"><a href="/manInfoManager"><h3>管理员信息管理</h3></a></li>
+    <li><a href="/manInfoStaff"><h3>员工信息管理</h3></a></li>
+    <!--<li><a href="/manInfoSalary"><h3>员工工资录入</h3></a></li>-->
+    <li><a href="/manInfoMail"><h3>邮件发送</h3></a></li>
+    <li><a href="/manOut"><h3>退出登录</h3></a></li>
+</ul>
+
+
+<form action="/saveManagerEdit">
+    <label for="user_name">ID</label>
+    <!--输入框合法字符检测-->
+    <input type="text" class="form-control" id="id" name="id"
+           th:value="${managerVO.id}" readonly="true">
+    <label for="user_name">用户名</label>
+    <input type="text" class="form-control" id="user_name" name="user_name"
+           th:value="${managerVO.user_name}">
+    <label for="real_name">真实姓名</label>
+    <input type="text" class="form-control" id="real_name" name="real_name"
+           th:value="${managerVO.real_name}">
+    <label for="power">权限</label>
+    <select id="power" name="power">
+        <option th:selected="${managerVO.power}=='普通管理'" value="1">普通管理</option>
+        <option th:selected="${managerVO.power}=='超级管理'" value="0">超级管理</option>
+    </select>
+    <br/>
+    <label for="tel">手机号</label>
+    <input type="text" class="form-control" id="tel" name="tel"
+           th:value="${managerVO.tel}">
+    <input type="submit" placeholder="保存">
+</form>
+</body>
+</html>
