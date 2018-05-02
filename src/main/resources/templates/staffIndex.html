@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理系统</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/action.js"></script>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li ><a href="#">管理窗口</a></li>
+    <li><a href="/manInfoManager">管理员信息管理</a></li>
+    <li class="active"><a href="/manInfoStaff">员工信息管理</a></li>
+    <!--<li><a href="/manInfoSalary">员工工资录入</a></li>-->
+    <li><a href="/manInfoMail">邮件发送</a></li>
+    <li><a href="/manOut">退出登录</a></li>
+</ul>
+<form action="/selectByEmail" method="get">
+    <input type="text" placeholder="邮箱" name="email" id="email">
+    <input type="submit" value="按邮箱查询">
+</form>
+
+<form action="/selectByUserName" method="get">
+    <input type="text" placeholder="用户名" name="user_name" id="user_name">
+    <input type="submit" value="姓名查询">
+</form>
+<form action="/selectByTimeZone" method="get">
+    <label for="join_time1">最早时间</label>
+    <input type="datetime-local" step="1"  id="join_time1" name="join_time1" width="15px">
+    <label for="join_time1">最晚时间</label>
+    <input type="datetime-local" step="1"  id="join_time2" name="join_time2" width="15px">
+    <input type="submit" value="时间查询">
+</form>
+<form action="/selectByStatus">
+    <select id="status" class="select" name="status">
+        <option value="0" selected="selected">在职</option>
+        <option value="1" >请假</option>
+        <option value="2" >离职</option>
+    </select>
+    <input type="submit" value="在职状态查询" />
+</form>
+<br/>
+<button onclick="javascrtpt:window.location.href='/addStaff'" class="button button-pill button-flat-primary">增加员工</button>
+<script>
+    document.getElementById("join_time1").value = getCurrentTime();
+    document.getElementById("join_time2").value = getCurrentTime();
+</script>
+</body>
+</html>

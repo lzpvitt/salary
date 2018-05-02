@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工工资录入</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/tab.js"></script>
+    <script src="webjars/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+        form {
+            height: 200px;
+            width: 500px;
+            border: 1px solid #666666;
+        }
+    </style>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li><a href="#"><h3>管理窗口</h3></a></li>
+    <li><a href="/manInfoManager"><h3>管理员信息管理</h3></a></li>
+    <li class="active"><a href="/manInfoStaff"><h3>员工信息管理</h3></a></li>
+    <!--<li><a href="/manInfoSalary"><h3>员工工资录入</h3></a></li>-->
+    <li><a href="/manInfoMail"><h3>邮件发送</h3></a></li>
+    <li><a href="/manOut"><h3>退出登录</h3></a></li>
+</ul>
+
+
+<form role="form" action="/saveSalary">
+    <label for="staff_id">ID</label>
+    <input type="text" class="form-control" id="staff_id" name="staff_id" readonly="readonly"
+           th:value="${staffSalaryVO.staff_id}">
+    <label for="user_name">姓名</label>
+    <input type="text" class="form-control" id="user_name" name="user_name" readonly="readonly"
+           th:value="${staffSalaryVO.user_name}">
+    <label for="salary_from">开始日期</label>
+    <input type="datetime-local" step="1" class="form-control" id="salary_from" name="salary_from">
+    <label for="salary_end">结束日期</label>
+    <input type="datetime-local" step="1" class="form-control" id="salary_end" name="salary_end">
+    <label for="base_salary">基础工资</label>
+    <input type="text" class="form-control" id="base_salary" name="base_salary"
+           th:value="${staffSalaryVO.base_salary}">
+    <label for="merit_pay">绩效工资</label>
+    <input type="text" class="form-control" id="merit_pay" name="merit_pay"
+           th:value="${staffSalaryVO.merit_pay}">
+    <label for="income">收 入</label>
+    <input type="text" class="form-control" id="income" name="income">
+    <label for="social_security">社保金</label>
+    <input type="text" class="form-control" id="social_security" name="social_security">
+    <label for="public_reserve_funds">公积金</label>
+    <input type="text" class="form-control" id="public_reserve_funds" name="public_reserve_funds">
+    <label for="personal_income_tax">个 税</label>
+    <input type="text" class="form-control" id="personal_income_tax" name="personal_income_tax">
+    <label for="after_tax_income">税后收入</label>
+    <input type="text" class="form-control" id="after_tax_income" name="after_tax_income">
+    <label for="balance_date">结算日期</label>
+    <input type="datetime-local" step="1" class="form-control" id="balance_date" name="balance_date">
+    <br/>
+    <button type="button" class="btn btn-default" onclick="calculate()">结 算</button>
+    <button type="submit" class="btn btn-default" disabled="disabled" id="salary_send">发 放</button>
+</form>
+<script>
+    var format = "";
+    //构造符合datetime-local格式的当前日期
+    var nTime = new Date();
+    format += nTime.getFullYear() + "-";
+    format += (nTime.getMonth() + 1) < 10 ? "0" + (nTime.getMonth() + 1) : (nTime.getMonth() + 1);
+    format += "-";
+    format += nTime.getDate() < 10 ? "0" + (nTime.getDate()) : (nTime.getDate());
+    format += "T";
+    format += nTime.getHours() < 10 ? "0" + (nTime.getHours()) : (nTime.getHours());
+    format += ":";
+    format += nTime.getMinutes() < 10 ? "0" + (nTime.getMinutes()) : (nTime.getMinutes());
+    format += ":";
+    format += nTime.getSeconds() < 10 ? "0" + (nTime.getSeconds()) : (nTime.getSeconds());
+    // format += ":49";
+    document.getElementById("salary_from").value = format;
+    document.getElementById("salary_end").value = format;
+    document.getElementById("balance_date").value = format;
+</script>
+<script>
+    function calculate() {
+        //数据正确性待验证
+        //根据表格中的参数  发送异步请求   后端计算出工资数据
+        var id = document.getElementById("staff_id").value;
+        var user_name = document.getElementById("user_name").value;
+        var base_salary = document.getElementById("base_salary").value;
+        var merit_pay = document.getElementById("merit_pay").value;
+        var jsonStr = "{";
+        jsonStr=jsonStr+'"staff_id":'+id+','+'"user_name":"'+user_name+'",'+'"base_salary":'+base_salary+','+'"merit_pay":'+merit_pay;
+        jsonStr=jsonStr+"}";
+
+        $.ajax({
+            type: 'POST',
+            url: '/calculateSalary',
+            contentType: 'application/json',
+            data: jsonStr.toString(),
+            dataType: 'json',
+            async: true,        // 异步
+            success: function (data) {
+              //  alert(data["after_tax_income"]);
+                document.getElementById("salary_send").disabled = false;
+                document.getElementById("income").value=data["income"];
+                document.getElementById("social_security").value=data["social_security"];
+                document.getElementById("public_reserve_funds").value=data["public_reserve_funds"];
+                document.getElementById("personal_income_tax").value=data["personal_income_tax"];
+                document.getElementById("after_tax_income").value=data["after_tax_income"];
+            },
+            error: function (data) {
+                alert("计算失败");
+            }
+        });
+    }
+</script>
+</body>
+</html>

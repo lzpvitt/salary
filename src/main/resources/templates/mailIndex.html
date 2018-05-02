@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>工资管理</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/action.js"></script>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li ><a href="#">管理窗口</a></li>
+    <li ><a href="/manInfoManager">管理员信息管理</a></li>
+    <li ><a href="/manInfoStaff">员工信息管理</a></li>
+    <!--<li ><a href="/manInfoSalary">员工工资录入</a></li>-->
+    <li class="active"><a href="/manInfoMail">邮件发送</a></li>
+    <li><a href="/manOut">退出登录</a></li>
+</ul>
+<form id="form1" name="form1" class="table"  action="/sendEmailByDate">
+    <!--这里因为时间区间就这使用之前员工入职时间的VO 所以name属性要因此改为那个对应的-->
+    <label for="join_time1">开始日期</label>
+    <input type="datetime-local" step="1" class="form-control" id="join_time1" name="join_time1">
+    <label for="join_time2">结束日期</label>
+    <input type="datetime-local" step="1" class="form-control" id="join_time2" name="join_time2">
+    <input type="submit" value="按日期批量发送工资邮件" onclick="send()">
+</form>
+<script>
+    document.getElementById("join_time1").value = getCurrentTime();
+    document.getElementById("join_time2").value = getCurrentTime();
+</script>
+<script type="text/javaScript">
+    function send(){
+    $("#form1").submit(function (){
+        var ajax_url = "/sendEmailByDate"; //表单目标
+        var ajax_type = $(this).attr('method'); //提交方法
+        var ajax_data = $(this).serialize(); //表单数据
+
+        $.ajax({
+            type:ajax_type, //表单提交类型
+            url:ajax_url, //表单提交目标
+            data:ajax_data, //表单数据
+            success:function(msg){
+                if(msg == 'success'){//msg 是后台调用action时，你传过来的参数
+                    alert("mails send  success..");
+                    window.close();
+                }else{
+                    //do things here
+                }
+            }
+        });
+        //return false; //阻止表单的默认提交事件
+    });
+    }
+</script>
+</body>
+</html>

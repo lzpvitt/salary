@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理系统</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/tab.js"></script>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li ><a href="#"><h3>管理窗口</h3></a></li>
+    <li><a href="/manInfoManager"><h3>管理员信息管理</h3></a></li>
+    <li class="active"><a href="/manInfoStaff"><h3>员工信息管理</h3></a></li>
+    <li><a href="/manInfoSalary"><h3>员工工资录入</h3></a></li>
+    <li><a href="/manInfoMail"><h3>邮件发送</h3></a></li>
+    <li><a href="/manOut"><h3>退出登录</h3></a></li>
+</ul>
+<table class="table">
+    <!--<caption><h4 align="center">员工信息管理</h4></caption>-->
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>姓名</th>
+        <th>生日</th>
+        <th>邮箱</th>
+        <th>地址</th>
+        <th>加入时间</th>
+        <th>基础工资</th>
+        <th>绩效工资</th>
+        <th>在职状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="staffVo : ${listStaffVO.getStaffVOS()}">
+        <td th:text="${staffVo.id}">1</td>
+        <td th:text="${staffVo.user_name}">user_name</td>
+        <td th:text="${staffVo.birthday}">birthday</td>
+        <td th:text="${staffVo.email}">email</td>
+        <td th:text="${staffVo.address}">address</td>
+        <td th:text="${staffVo.join_time}">join_time</td>
+        <td th:text="${staffVo.base_salary}">base_salary</td>
+        <td th:text="${staffVo.merit_pay}">merit_pay</td>
+        <td th:text="${staffVo.status}">status</td>
+        <td>
+            <!--<a th:href="@{/editStaff(staffVo =${staffVo})}">修改1</a>-->
+            <a target="_blank" th:href="@{/editStaff(id=${staffVo.id},user_name=${staffVo.user_name},birthday=${staffVo.birthday},email=${staffVo.email}
+            ,address=${staffVo.address},join_time=${staffVo.join_time},base_salary=${staffVo.base_salary},merit_pay=${staffVo.merit_pay},status=${staffVo.status})}">修改</a>
+            <!--根据id删除-->
+            <a th:href="@{/deleteStaffByID(id=${staffVo.id})}">删除</a>
+            <a >工资录入</a>
+            <a >历史工资查询</a>
+        </td>
+
+
+    </tr>
+    </tbody>
+</table>
+<div id="beforePage"></div>
+<div id="afterPage"></div>
+<script th:inline="javascript">
+    //js  实现分页的选择按钮  以及不同条件下不同的分页链接（请求链接不同）
+    var totalPages = Math.ceil([[${listStaffVO.getTotalNum()}]]/20);
+    var pageNum = [[${listStaffVO.getPageNum()}]];
+    var pageSize = [[${listStaffVO.getPageSize()}]];
+    var url = window.location.href;
+    var baseUrl="";
+    //正则匹配出原来请求到这个页面的链接  除掉  pageNum部分  若没有匹配  则直接在原链接上面加页面参数
+    var pattern = /.*(?=&pageNum)/;
+    console.log(pattern.test(url));
+    if(pattern.exec(url)==null){
+        baseUrl = url;
+    }else {
+        baseUrl = pattern.exec(url);
+    }
+    if(pageNum>1){
+        //加上上一页功能
+        var pageNumBefore = pageNum - 1;
+        url = baseUrl+"&pageNum="+pageNumBefore+"&pageSize="+pageSize;
+        var inner ="<input type=\"button\" onclick=\"javascrtpt:window.location.href='";
+        inner =inner+url+"'\" value=\"上一页\">";
+        document.getElementById("beforePage").innerHTML=inner;
+    }else {
+        //生成不可点击的上一页
+    }
+
+    if(pageNum<totalPages-1){
+        //加上下一页功能
+        var pageNumBefore = pageNum +1;
+        url = baseUrl+"&pageNum="+pageNumBefore+"&pageSize="+pageSize;
+        var inner ="<input type=\"button\" onclick=\"javascrtpt:window.location.href='";
+        inner =inner+url+"'\" value=\"下一页\">";
+        document.getElementById("afterPage").innerHTML=inner;
+    }else {
+        //生成不可点击的下一页
+
+    }
+
+    // alert(baseUrl);
+    // alert(totalPages);
+    // alert(pageNum);
+    // alert(pageSize);
+</script>
+</body>
+</html>

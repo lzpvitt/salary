@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工信息编辑</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/tab.js"></script>
+    <style>
+        form{ height:200px; width:500px; border:1px solid #666666;}
+    </style>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li ><a href="#"><h3>管理窗口</h3></a></li>
+    <li><a href="/manInfoManager"><h3>管理员信息管理</h3></a></li>
+    <li class="active"><a href="/manInfoStaff"><h3>员工信息管理</h3></a></li>
+    <!--<li><a href="/manInfoSalary"><h3>员工工资录入</h3></a></li>-->
+    <li><a href="/manInfoMail"><h3>邮件发送</h3></a></li>
+    <li><a href="/manOut"><h3>退出登录</h3></a></li>
+</ul>
+
+<form role="form" action="/saveStaffEdit">
+
+    <!--输入框合法字符检测-->
+    <label for="user_name">姓名</label>
+    <input type="text" class="form-control" id="user_name" name="user_name"
+           placeholder="name" >
+    <label for="birthday">生日</label>
+    <input type="datetime-local" step="1" class="form-control" id="birthday" name="birthday"
+           placeholder="birthday">
+    <label for="address">地址</label>
+    <input type="text" class="form-control" id="address" name="address"
+           placeholder="address">
+    <label for="email">邮箱</label>
+    <input type="email" class="form-control" id="email" name="email"
+           placeholder="email">
+    <label for="join_time">加入时间</label>
+    <input type="datetime-local" step="1" class="form-control" id="join_time" name="join_time"
+           placeholder="joinTime">
+    <label for="base_salary">基础工资</label>
+    <input type="text" class="form-control" id="base_salary" name="base_salary"
+           placeholder="baseSalary">
+    <label for="merit_pay">绩效工资</label>
+    <input type="text" class="form-control" id="merit_pay" name="merit_pay"
+           placeholder="meritSalary">
+    <label for="status">在职状态</label>
+    <select id="status" class="select" name="status">
+        <option value="在职"  selected="selected">在职</option>
+        <option value="请假" >请假</option>
+        <option value="离职">离职</option>
+        <option value="状态未知">状态未知</option>
+    </select>
+    <br/>
+    <button type="submit" class="btn btn-default">保存</button>
+</form>
+<script>
+    var format = "";
+    //构造符合datetime-local格式的当前日期
+    var nTime = new Date();
+    format += nTime.getFullYear() + "-";
+    format += (nTime.getMonth() + 1) < 10 ? "0" + (nTime.getMonth() + 1) : (nTime.getMonth() + 1);
+    format += "-";
+    format += nTime.getDate() < 10 ? "0" + (nTime.getDate()) : (nTime.getDate());
+    format += "T";
+    format += nTime.getHours() < 10 ? "0" + (nTime.getHours()) : (nTime.getHours());
+    format += ":";
+    format += nTime.getMinutes() < 10 ? "0" + (nTime.getMinutes()) : (nTime.getMinutes());
+    format += ":";
+    format += nTime.getSeconds() < 10 ? "0" + (nTime.getSeconds()) : (nTime.getSeconds());
+    // format += ":49";
+    document.getElementById("join_time").value = format;
+    document.getElementById("birthday").value = format;
+</script>
+</body>
+</html>

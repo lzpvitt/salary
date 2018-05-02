@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>工资管理</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li ><a href="#">管理窗口</a></li>
+    <li ><a href="/manInfoManager">管理员信息管理</a></li>
+    <li ><a href="/manInfoStaff">员工信息管理</a></li>
+    <!--<li class="active"><a href="/manInfoSalary">员工工资录入</a></li>-->
+    <li><a href="/manInfoMail">邮件发送</a></li>
+    <li><a href="/manOut">退出登录</a></li>
+</ul>
+
+<form action="/selectByStatus">
+    <select id="status" class="select" name="status">
+        <option value="0" selected="selected">在职</option>
+        <option value="1" >请假</option>
+        <option value="2" >离职</option>
+        <!--<option value="3" >状态未知</option>-->
+    </select>
+    <input type="submit" value="录入查询" />
+</form>
+</body>
+</html>

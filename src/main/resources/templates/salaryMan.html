@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工信息编辑</title>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/tab.js"></script>
+    <script src="js/action.js"></script>
+    <style>
+        form{ height:200px; width:500px; border:1px solid #666666;}
+    </style>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li ><a href="#"><h3>管理窗口</h3></a></li>
+    <li><a href="/manInfoManager"><h3>管理员信息管理</h3></a></li>
+    <li class="active"><a href="/manInfoStaff"><h3>员工信息管理</h3></a></li>
+    <!--<li><a href="/manInfoSalary"><h3>员工工资录入</h3></a></li>-->
+    <li><a href="/manInfoMail"><h3>邮件发送</h3></a></li>
+    <li><a href="/manOut"><h3>退出登录</h3></a></li>
+</ul>
+
+<table class="table">
+    <!--<caption><h4 align="center">员工信息管理</h4></caption>-->
+    <thead>
+    <tr>
+        <th>员工id</th>
+        <th>姓名</th>
+        <th>邮箱</th>
+        <th>基础工资</th>
+        <th>绩效工资</th>
+        <th>个人所得</th>
+        <th>公积金</th>
+        <th>社保</th>
+        <th>个税</th>
+        <th>开始日期</th>
+        <th>结束日期</th>
+        <th>结算日期</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="salaryVO:${listSalaryAndInfoVO.getListSalaryVO().getSalaryVOList()}">
+        <td th:text="${salaryVO.staff_id}"></td>
+        <td th:text="${listSalaryAndInfoVO.getStaff().user_name}"></td>
+        <td th:text="${listSalaryAndInfoVO.getStaff().email}"></td>
+        <td th:text="${salaryVO.base_salary}"></td>
+        <td th:text="${salaryVO.merit_pay}"></td>
+        <td th:text="${salaryVO.getIncome()}"></td>
+        <td th:text="${salaryVO.public_reserve_funds}"></td>
+        <td th:text="${salaryVO.getSocial_security()}"></td>
+        <td th:text="${salaryVO.personal_income_tax}"></td>
+        <td th:text="${salaryVO.getSalary_from()}"></td>
+        <td th:text="${salaryVO.getSalary_end()}"></td>
+        <td th:text="${salaryVO.balance_date}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
